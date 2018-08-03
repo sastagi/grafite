@@ -1,0 +1,51 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'android-reporting'
+apply plugin: 'jacoco'
+
+buildscript {
+    ext.kotlin_version = '1.2.51'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha04'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(
+        type: Copy
+) {
+    delete rootProject.buildDir
+
+}
+
+task jacocoReport(type: JacocoReport) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$rootProject.projectDir/model/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/model/tmp/kotlin-classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/app/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/app/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "$rootProject.projectDir/model/src/main/java" + "$rootProject.projectDir/app/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: rootProject.projectDir, includes: [
+            'app/build/jacoco/testDebugUnitTest.exec', 'model/build/jacoco/testDebugUnitTest.exec'
+    ])
+}
+
