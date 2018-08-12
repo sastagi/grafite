@@ -1,24 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'jacoco'
+apply from: rootProject.file('gradle/test-coverage.gradle')
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
-
-    reports {
-        xml.enabled = true
-        html.enabled = true
-    }
-
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/java"
-
-    sourceDirectories = files([mainSrc])
-    classDirectories = files([debugTree])
-    executionData = fileTree(dir: project.projectDir, includes: [
-            'build/jacoco/testDebugUnitTest.exec'
-    ])
-}
+testCoverage(project, 'debug')
 
 android {
     compileSdkVersion 27

@@ -1,18 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply from: rootProject.file('gradle/test-coverage.gradle')
 
-apply plugin: 'jacoco'
-
-jacoco {
-    toolVersion = '0.8.2-SNAPSHOT'
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-}
+testCoverage(project, 'debug')
 
 android {
     compileSdkVersion 27

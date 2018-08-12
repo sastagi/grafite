@@ -1,0 +1,61 @@
+ext.testCoverage = { Project project, String variant ->
+
+    final capVariant = variant.capitalize()
+
+    project.plugins.apply('jacoco')
+
+    project.android.testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+
+    project.jacoco {
+        toolVersion = '0.8.2-SNAPSHOT'
+    }
+
+    project.tasks.create(
+            name: 'jacocoUnitTestReport',
+            type: JacocoReport,
+            dependsOn: "test${capVariant}UnitTest"
+    ) {
+        def buildDir = project.buildDir
+
+        def coverageSourceDirs = [
+                "src/main/java",
+                "src/main/kotlin"
+        ]
+
+        def fileFilter = [
+                '**/R.class',
+                '**/R$*.class',
+                '**/*$ViewInjector*.*',
+                '**/*$ViewBinder*.*',
+                '**/BuildConfig.*',
+                '**/Manifest*.*'
+        ]
+
+        def javaClasses = fileTree(
+                dir: "$buildDir/intermediates/classes/debug",
+                excludes: fileFilter
+        )
+        def kotlinClasses = fileTree(
+                dir: "$buildDir/tmp/kotlin-classes/debug",
+                excludes: fileFilter
+        )
+
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports for the ${project.name} with the " +
+                "$variant variant."
+        classDirectories = files([ javaClasses ], [ kotlinClasses ])
+        additionalSourceDirs = files(coverageSourceDirs)
+        sourceDirectories = files(coverageSourceDirs)
+        executionData = files("${project.buildDir}/jacoco/test${capVariant}UnitTest.exec")
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+}

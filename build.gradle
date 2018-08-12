@@ -11,9 +11,11 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0-alpha05'
+        classpath 'com.github.TestArmada:flank:v2.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -24,4 +26,22 @@ allprojects {
         jcenter()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
+}
+
+task unifiedTestReport(type: JacocoReport, group: "Unification") {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$rootProject.projectDir/app/build/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/app/build/tmp/kotlin-classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/model/build/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/model/build/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "$rootProject.projectDir/app/src/main/java" + "$rootProject.projectDir/model/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: rootProject.projectDir, includes: [
+            'app/build/jacoco/testDebugUnitTest.exec', 'model/build/jacoco/testDebugUnitTest.exec', 'misc/coverage_reports/*.exec'
+    ])
 }
