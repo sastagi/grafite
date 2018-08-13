@@ -13,5 +13,13 @@
 ## Creating coverage reports
 
 Run the following from the root of the project:
-1. `./scripts/apks_for_testing.sh`
-2. `./scripts/flank.sh`
+1. `./gradlew testDebugUnitTest`
+2. `./scripts/apks_for_testing.sh`
+3. `./scripts/flank.sh`
+4. `./gradlew unifiedTestReport`
+
+## Coverage reports
+
+If everything works well, the html report at `Grafite/build/reports/jacoco/unifiedTestReport/html/index.html`, should look like this:
+
+![Alt text](./misc/coverage_reports.png "Final coverage reports")
