@@ -10,7 +10,7 @@
 
 ### B. Register Android app
 
-1. Upon successful creation of the project, you will land on the project dashboard. Click "Add Firebase to your Android App":![Alt text](./misc/readme_assets/add_project.png "Add project")
+1. Upon successful creation of the project, you will land on the project dashboard. Click "Add Firebase to your Android App".
 
 2. Specify `com.primedroid.grafite` as the package name while adding the app:![Alt text](./misc/readme_assets/package_name.png "Package name")
  
