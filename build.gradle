@@ -28,7 +28,10 @@ allprojects {
     }
 }
 
-task unifiedTestReport(type: JacocoReport, group: "Unification") {
+task unifiedTestReport(
+        type: JacocoReport,
+        group: "Unification"
+) {
 
     reports {
         xml.enabled = true
@@ -36,7 +39,10 @@ task unifiedTestReport(type: JacocoReport, group: "Unification") {
     }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "$rootProject.projectDir/app/build/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/app/build/tmp/kotlin-classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/model/build/intermediates/classes/debug", excludes: fileFilter) + fileTree(dir: "$rootProject.projectDir/model/build/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def debugTree = fileTree(dir: "$rootProject.projectDir/app/build/intermediates/classes/debug", excludes: fileFilter)\
+                    + fileTree(dir: "$rootProject.projectDir/app/build/tmp/kotlin-classes/debug", excludes: fileFilter)\
+                    + fileTree(dir: "$rootProject.projectDir/model/build/intermediates/classes/debug", excludes: fileFilter)\
+                    + fileTree(dir: "$rootProject.projectDir/model/build/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "$rootProject.projectDir/app/src/main/java" + "$rootProject.projectDir/model/src/main/java"
 
     sourceDirectories = files([mainSrc])
