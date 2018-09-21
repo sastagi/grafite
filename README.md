@@ -26,8 +26,8 @@
 ### D. Create gcloud bucket
 
 1. Go to gcloud console on web to create a new bucket. Make sure you are still in the same project created in step A. (more information about buckets here - https://cloud.google.com/storage/docs/creating-buckets). You will need a credit card to create a bucket.
-2. Specify this bucket in the config.properties file in the `grafite` android app project that you hace cloned/downloaded from this repository.
-3. Specify this bucket for BUCKET_NAME in misc/flank.sh in the `grafite` android app project that you hace cloned/downloaded from this repository.
+2. Specify this bucket in the config.properties file in the `grafite` android app project that you have cloned/downloaded from this repository.
+3. Specify this bucket for BUCKET_NAME in misc/flank.sh in the `grafite` android app project that you have cloned/downloaded from this repository.
 
 ## Creating coverage reports
 
